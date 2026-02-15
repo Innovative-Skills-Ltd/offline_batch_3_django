@@ -31,13 +31,36 @@ def demo_template(req):
     #return HttpResponse(response_text, content_type="text/plain")
     return render(req,'demo.html',data)
 
+import random
+import secrets
+from django.core.mail import send_mail
+from django.conf import settings
+def send_otp_email(user_email, otp):
+    send_mail(
+        subject="Your OTP Code",
+        message=f"Your OTP is {otp}. It will expire in 5 minutes.",
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[user_email],
+        fail_silently=False,
+    )
+    return HttpResponse("send")
+
+def generate_otp():
+    # return ''.join([str(secrets.randbelow(10)) for _ in range(6)])
+    return random.randint(100000, 999999)
+
+
 def demo_insert(req):
 
     name = req.POST.get('uname')
     conpw = req.POST.get('conpw')
+    email = req.POST.get('email')
+
+    # otp = generate_otp()
+    # return HttpResponse(f"hello {otp}")
 
     pw = req.POST.get('pw')
-    if(len(name)==0 or len(pw)==0 or len(conpw)==0):
+    if(len(name)==0 or len(pw)==0 or len(conpw)==0) or len(email)==0:
         return HttpResponse("these field can not be empty")
     else:
 
@@ -50,7 +73,11 @@ def demo_insert(req):
         #     return HttpResponse("Successfully Done")
 
         else:
-            create_user = User(u_name=name,password=pw)
+            otp = generate_otp()
+            v_status = 0
+            # return HttpResponse(otp)
+            send_otp_email(email,otp)
+            create_user = User(u_name=name,password=pw,email=email,v_status=v_status)
             create_user.save()
             return redirect('show_user')
 
