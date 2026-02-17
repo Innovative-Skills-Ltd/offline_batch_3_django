@@ -35,10 +35,10 @@ import random
 import secrets
 from django.core.mail import send_mail
 from django.conf import settings
-def send_otp_email(user_email, otp):
+def send_otp_email(user_email, otp,verification_link):
     send_mail(
         subject="Your OTP Code",
-        message=f"Your OTP is {otp}. It will expire in 5 minutes.",
+        message=f"Your OTP is {otp}. Please click on {verification_link} It will expire in 5 minutes.",
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=[user_email],
         fail_silently=False,
@@ -49,7 +49,10 @@ def generate_otp():
     # return ''.join([str(secrets.randbelow(10)) for _ in range(6)])
     return random.randint(100000, 999999)
 
+from django.urls import reverse
 
+def verify_email(req,id):
+    return HttpResponse(id)
 def demo_insert(req):
 
     name = req.POST.get('uname')
@@ -76,9 +79,16 @@ def demo_insert(req):
             otp = generate_otp()
             v_status = 0
             # return HttpResponse(otp)
-            send_otp_email(email,otp)
+            # send_otp_email(email,otp)
             create_user = User(u_name=name,password=pw,email=email,v_status=v_status)
             create_user.save()
+
+            verification_link = req.build_absolute_uri(
+            reverse("verify_email", args=[create_user.id])
+            )
+            return HttpResponse(verification_link)
+            send_otp_email(email,otp,verification_link)
+
             return redirect('show_user')
 
     #which insert approach is fast, when to use, why it is fast or slow

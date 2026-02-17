@@ -27,4 +27,5 @@ urlpatterns = [
     path('user_list/',views.user_list,name='show_user'),
     path('edit/<int:uid>',views.editUser,name='edit_user'),
     path('update/',views.update_user,name='update'),
+    path('verify/<int:id>/', views.verify_email, name="verify_email"),
 ]

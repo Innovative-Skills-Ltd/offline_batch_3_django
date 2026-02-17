@@ -128,6 +128,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = "innovativeskillsbd@gmail.com"
-EMAIL_HOST_PASSWORD = "app password"
+#EMAIL_HOST_PASSWORD = "mwyu aisu xhkq qiem"
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
