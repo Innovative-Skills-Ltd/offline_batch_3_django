@@ -20,14 +20,7 @@ from django.urls import path,include
 from . import views
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path('', views.sample_view), #root URL
-    path('sum/', views.sum),
-    path('demo_html/',views.demo_template),
-    path('insert_login/',views.demo_insert,name='insert'),
-    path('user_list/',views.user_list,name='show_user'),
-    path('edit/<int:uid>',views.editUser,name='edit_user'),
-    path('update/',views.update_user,name='update'),
-    path('verify/<int:id>/', views.verify_email, name="verify_email"),
-
-    path('category/',include('category.urls')),
+    path('insert/',views.insert),
+    path('update/',views.update),
+    path('delete/',views.delete),
 ]
