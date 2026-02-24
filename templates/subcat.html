@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Subcategory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 380px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Add Subcategory</h2>
+
+        <form action="{% url 'subcat_insert' %}" method="POST">
+            {% csrf_token %}
+            
+            <label for="category">Select Category</label>
+            <select id="category" name="cat_id" required>
+                
+                <option value="">-- Select Category --</option>
+                {% for i in all_cat %}
+                <option value="{{i.id}}">{{i.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="subcategory">Subcategory Name</label>
+            <input type="text" name="subcategory_name" id="subcategory" placeholder="Enter Subcategory Name" required>
+
+            <button type="submit">Add Subcategory</button>
+
+        </form>
+
+        <h2 style="text-align:center;">Subcategory List</h2>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Cat Name</th>
+            <th>Subcat Name</th>
+            <th>Action</th>
+        </tr>
+        {% for i in all_subcat %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.category.name}}</td>
+            <td>{{i.sub_cat_name}}</td>
+            <td>Edit</td>
+            
+
+        </tr>
+        {% endfor %}
+
+        {% for i in all_subcat_rel %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.category.name}}</td>
+            <td>{{i.sub_cat_name}}</td>
+            <td>Edit</td>
+            
+
+        </tr>
+        {% endfor %}
+        
+    </table>
+    </div>
+
+</body>
+</html>
